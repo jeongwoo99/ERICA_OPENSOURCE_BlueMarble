@@ -72,3 +72,7 @@ def field():#게임 판 보여주기
     print("l "+str(field[0]['place'])+" "+str(field[15]['place'])+" "+str(field[14]['place'])+" "+str(field[13]['place'])+" "+str(field[12]['place'])+" l")
     print("+ - - - - - +")
     return field
+
+def make_player(player):#플레이어 만들기
+    player = {'where':0,'money':50}
+    return player
