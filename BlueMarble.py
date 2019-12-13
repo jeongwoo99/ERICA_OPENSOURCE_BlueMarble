@@ -1,3 +1,4 @@
+import random
 def count_player():#플레이 할 사람수 입력
     while True:
         try:
@@ -50,3 +51,9 @@ def press_start():#누르면 시작
         return True
     else:
         return False
+
+def dice():#주사위 굴리기
+    dice = [1,2,3,4,5,6]
+    random.shuffle(dice)
+    print("이번 주사위 : "+str(dice[0]))
+    return dice[0]
