@@ -86,3 +86,39 @@ def info_player(player):#플레이어 정보 출력
     else:
         print("현재 위치 : "+chr(player['where']+96))
     print("보유 돈 : "+str(player['money']))
+
+def game():
+    player_list = []
+    count = count_player()
+    if(count == 2):
+        player1 = set()
+        player2 = set()
+        player_list.append(make_player(player1))
+        player_list.append(make_player(player2))
+    elif(count == 3):
+        player1 = set()
+        player2 = set()
+        player3 = set()
+        player_list.append(make_player(player1))
+        player_list.append(make_player(player2))
+        player_list.append(make_player(player3))
+    else:
+        player1 = set()
+        player2 = set()
+        player3 = set()
+        player4 = set()
+        player_list.append(make_player(player1))
+        player_list.append(make_player(player2))
+        player_list.append(make_player(player3))
+        player_list.append(make_player(player4))
+    field()
+    for i in range(1,count+1):
+        print("player"+str(i))
+        info_player(player_list[i-1])
+    a = dice()
+    player_list[0]['where'] += a
+    for i in range(1,count+1):
+        print("player"+str(i))
+        info_player(player_list[i-1])
+
+game()
