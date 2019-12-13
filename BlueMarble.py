@@ -76,3 +76,13 @@ def field():#게임 판 보여주기
 def make_player(player):#플레이어 만들기
     player = {'where':0,'money':50}
     return player
+
+def info_player(player):#플레이어 정보 출력
+    if(player['where'] >= 16):
+        player['where'] -= 16
+        player['money'] += 30
+    if(player['where'] == 0):
+        print("현재 위치 : s")
+    else:
+        print("현재 위치 : "+chr(player['where']+96))
+    print("보유 돈 : "+str(player['money']))
