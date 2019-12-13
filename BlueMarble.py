@@ -57,3 +57,18 @@ def dice():#주사위 굴리기
     random.shuffle(dice)
     print("이번 주사위 : "+str(dice[0]))
     return dice[0]
+
+def field():#게임 판 보여주기
+    place = ['s','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o']
+    price = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+    field = []
+    for i in range(0,16):
+        field.append({'place':place[i],'price':price[i]})
+    print("+ - - - - - +")
+    print("l "+str(field[4]['place'])+" "+str(field[5]['place'])+" "+str(field[6]['place'])+" "+str(field[7]['place'])+" "+str(field[8]['place'])+" l")
+    print("l "+str(field[3]['place'])+"       "+str(field[9]['place'])+" l")
+    print("l "+str(field[2]['place'])+"       "+str(field[10]['place'])+" l")
+    print("l "+str(field[1]['place'])+"       "+str(field[11]['place'])+" l")
+    print("l "+str(field[0]['place'])+" "+str(field[15]['place'])+" "+str(field[14]['place'])+" "+str(field[13]['place'])+" "+str(field[12]['place'])+" l")
+    print("+ - - - - - +")
+    return field
