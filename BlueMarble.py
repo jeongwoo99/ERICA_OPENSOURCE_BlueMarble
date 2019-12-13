@@ -36,3 +36,17 @@ def press_start():#누르면 시작
         return True
     else:
         return False
+
+ def buy_land():#땅 사기
+    while True:
+        try:
+            x = input("땅을 사시겠습니까? y or n")
+            while x not in {'y','n'}:
+                x = input("땅을 사시겠습니까? y or n")
+            break
+        except ValueError:
+            continue
+    if(x == 'y'):
+        return True
+    else:
+        return False
