@@ -22,3 +22,17 @@ def change_turn():#차례 넘기기
         return True
     else:
         return False
+
+def press_start():#누르면 시작
+    while True:
+        try:
+            x = input("press start(s를 입력해주세요.)")
+            while x != 's':
+                x = input("press start(s를 입력해주세요.)")
+            break
+        except ValueError:
+            continue
+    if(x == 's'):
+        return True
+    else:
+        return False
