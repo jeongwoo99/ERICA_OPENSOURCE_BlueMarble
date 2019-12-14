@@ -38,7 +38,7 @@ def press_start():#누르면 시작
     else:
         return False
 
- def buy_land():#땅 사기
+def buy_land():#땅 사기
     while True:
         try:
             x = input("땅을 사시겠습니까? y or n")
@@ -111,14 +111,20 @@ def game():
         player_list.append(make_player(player2))
         player_list.append(make_player(player3))
         player_list.append(make_player(player4))
-    field()
-    for i in range(1,count+1):
-        print("player"+str(i))
-        info_player(player_list[i-1])
-    a = dice()
-    player_list[0]['where'] += a
-    for i in range(1,count+1):
-        print("player"+str(i))
-        info_player(player_list[i-1])
+    turn = 0
+    while(turn < count):
+        field()
+        print("\n")
+        for i in range(1,count+1):
+            print("player"+str(i))
+            info_player(player_list[i-1])
+        print("\n")
+        a = dice()
+        print("\n")
+        player_list[0]['where'] += a
+        for i in range(1,count+1):
+            print("player"+str(i))
+            info_player(player_list[i-1])
+        turn += 1
 
 game()
