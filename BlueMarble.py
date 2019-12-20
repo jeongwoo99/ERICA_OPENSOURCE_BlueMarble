@@ -5,7 +5,20 @@ def count_player():#플레이 할 사람수 입력
         try:
             x = int(input("몇명?"))
             while x not in {2,3,4}:
-                x = int(input("몇명?"))
+                x = int(input("몇명?a"))
+            break
+        except ValueError:
+            continue
+    return x
+
+def count_computer():
+    if (count_player()) == 4:
+        print("너무 많은 사람들이 참여하기 때문에 AI는 없습니다.")
+    while (count_player() < 4):
+        try:
+            x = int(input("얼마나 많은 ai를 원합니까?"))
+            while (x + count_player()) > 4:
+                x = int(input("너무 많아요.",str(4-x)+"보다 적게 해 주세요."))
             break
         except ValueError:
             continue
@@ -76,57 +89,58 @@ def field():#게임 판 보여주기
     return field
 
 def make_player(player):#플레이어 만들기
-    player = {'where':0,'money':50}
+    player = {'before_where':0,'where':0,'money':50, 'alive':1}
     return player
 
 def info_player(player):#플레이어 정보 출력
     if(player['where'] >= 16):
         player['where'] -= 16
         player['money'] += 30
-    if(player['where'] == 0):
-        print("현재 위치 : s")
+    if(player['before_where'] == 0):
+        player['before_where'] == 's'
+    if(player['where'] != player['before_where']):
+        if(player['where'] == 0):
+            print("현재 위치 :",chr(player['before_where']+96),">>> s")
+        else:
+            if(player['before_where'] == 0):
+                print("현재 위치 : s",">>>",chr(player['where']+96))
+            else:
+                print("현재 위치 :",chr(player['before_where']+96),">>>",chr(player['where']+96))
     else:
-        print("현재 위치 : "+chr(player['where']+96))
+        if(player['where'] == 0):
+            print("현재 위치 :"," s")
+        else:
+            print("현재 위치 :",chr(player['where']+96))
+
+    player['before_where'] = player['where']
     print("보유 돈 : "+str(player['money']))
+
+def the_end(player, cnt_p):
+    if(player['money'] < 0):
+        player['alive'] = 0;
+        cnt_p -= 1;
 
 def game():
     player_list = []
-    count = count_player()
-    if(count == 2):
-        player1 = set()
-        player2 = set()
-        player_list.append(make_player(player1))
-        player_list.append(make_player(player2))
-    elif(count == 3):
-        player1 = set()
-        player2 = set()
-        player3 = set()
-        player_list.append(make_player(player1))
-        player_list.append(make_player(player2))
-        player_list.append(make_player(player3))
-    else:
-        player1 = set()
-        player2 = set()
-        player3 = set()
-        player4 = set()
-        player_list.append(make_player(player1))
-        player_list.append(make_player(player2))
-        player_list.append(make_player(player3))
-        player_list.append(make_player(player4))
+    countp = count_player()
+    cnt_p = countp
+    for x in range(1, countp + 1):
+        playerx = set()
+        player_list.append(make_player(playerx))
     start = press_start()
     while(start != True):
         start = press_start()
     game_round = 1
     while(game_round < 6):
         turn = 1
-        while(turn < count+1):
+        while(turn < countp+1):
             print("현재 라운드 : "+str(game_round))
             field()
             print("현재 차례 : player"+str(turn))
             time.sleep(1.5)
             go = dice()
             player_list[turn-1]['where'] += go
-            for i in  range(1,count+1):
+            for i in  range(1,countp+1):
                 print("player"+str(i))
                 info_player(player_list[i-1])
             next_turn = change_turn()
