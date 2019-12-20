@@ -111,20 +111,25 @@ def game():
         player_list.append(make_player(player2))
         player_list.append(make_player(player3))
         player_list.append(make_player(player4))
-    turn = 0
-    while(turn < count):
-        field()
-        print("\n")
-        for i in range(1,count+1):
-            print("player"+str(i))
-            info_player(player_list[i-1])
-        print("\n")
-        a = dice()
-        print("\n")
-        player_list[0]['where'] += a
-        for i in range(1,count+1):
-            print("player"+str(i))
-            info_player(player_list[i-1])
-        turn += 1
+    start = press_start()
+    while(start != True):
+        start = press_start()
+    game_round = 1
+    while(game_round < 6):
+        turn = 1
+        while(turn < count+1):
+            print("현재 라운드 : "+str(game_round))
+            field()
+            print("현재 차례 : player"+str(turn))
+            go = dice()
+            player_list[turn-1]['where'] += go
+            for i in  range(1,count+1):
+                print("player"+str(i))
+                info_player(player_list[i-1])
+            next_turn = change_turn()
+            while(next_turn != True):
+                next_turn = change_turn()
+            turn += 1
+        game_round += 1
 
 game()
