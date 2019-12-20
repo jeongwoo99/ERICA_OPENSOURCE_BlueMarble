@@ -122,16 +122,20 @@ def the_end(player, cnt_p):
 
 def game():
     player_list = []
+    buyland_list = []
+    allland_list = []
     countp = count_player()
     cnt_p = countp
     for x in range(1, countp + 1):
         playerx = set()
         player_list.append(make_player(playerx))
+    for i in range(countp):
+        buyland_list.append([])
     start = press_start()
     while(start != True):
         start = press_start()
     game_round = 1
-    while(game_round < 20):
+    while(game_round < 30):
         turn = 1
         while(turn < countp+1):
             print("현재 라운드 : "+str(game_round))
@@ -143,6 +147,29 @@ def game():
             for i in  range(1,countp+1):
                 print("player"+str(i))
                 info_player(player_list[i-1])
+                print("땅:",str(buyland_list[i-1]))
+            a = player_list[turn-1]['where']
+            if game_field[a]['place'] not in allland_list:
+                if(player_list[turn-1]['where'] != 0):
+                    want_buy = buy_land()
+                    if(want_buy == True):
+                        if(player_list[turn-1]['money'] >= game_field[a]['price']):
+                            buyland_list[turn-1].append(game_field[a]['place'])
+                            player_list[turn-1]['money'] -= game_field[a]['price']
+                            alland_list.append(game_field[a]['place'])
+                        else:
+                            print("충분한 돈이 없습니다.")
+            else:
+                for i in range(countp):
+                    if(game_field[a]['place'] in buyland_list[i]):
+                        owner = i
+                if(turn-1 == owner):
+                    print("당신이 이미 소유한 땅입니다.")
+                else:
+                    print("player"+str(owner+1)+" 땅입니다.")
+                    print("player"+str(owner+1)+"에게 "+str(game_field[a]['price']*2)+"원을 지불합니다.")
+                    player_list[turn-1]['money'] -= game_field[a]['price'] * 2
+                    player_list[owner]p'money'] += game_field[a]['price'] * 2
             next_turn = change_turn()
             while(next_turn != True):
                 next_turn = change_turn()
