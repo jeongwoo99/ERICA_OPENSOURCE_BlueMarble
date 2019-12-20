@@ -131,14 +131,14 @@ def game():
     while(start != True):
         start = press_start()
     game_round = 1
-    while(game_round < 6):
+    while(game_round < 20):
         turn = 1
         while(turn < countp+1):
             print("현재 라운드 : "+str(game_round))
             field()
             print("현재 차례 : player"+str(turn))
-            time.sleep(1.5)
             go = dice()
+            time.sleep(1.5)
             player_list[turn-1]['where'] += go
             for i in  range(1,countp+1):
                 print("player"+str(i))
@@ -148,5 +148,14 @@ def game():
                 next_turn = change_turn()
             turn += 1
         game_round += 1
+    print("게임이 종료되었습니다.")
+    winner = 0
+    for x in range(countp-1):
+        if(player_list[x]['money'] >= player_list[winner]['money']):
+            winner = x+1
+    if(winner %2 == 1):
+        print("player"+str(winner+1)+"이 이 게임에서 이겼어요!")
+    else:
+        print("player"+str(winner+1)+"가 이 게임에서 이겼어요!")
 
 game()
