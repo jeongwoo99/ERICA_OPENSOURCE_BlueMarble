@@ -74,18 +74,52 @@ def dice():#주사위 굴리기
 
 def field():#게임 판 보여주기
     time.sleep(0.5)
-    place = ['s','a','b','c','d','e','f','g','h','i','j','k','l','m','n','o']
+    place = ["start",'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o']
     price = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
     field = []
     for i in range(0,16):
         field.append({'place':place[i],'price':price[i]})
-    print("+ - - - - - +")
-    print("| "+str(field[4]['place'])+" "+str(field[5]['place'])+" "+str(field[6]['place'])+" "+str(field[7]['place'])+" "+str(field[8]['place'])+" |")
-    print("| "+str(field[3]['place'])+"       "                                                                           +str(field[9]['place'])+" |")
-    print("| "+str(field[2]['place'])+"       "                                                                          +str(field[10]['place'])+" |")
-    print("| "+str(field[1]['place'])+"       "                                                                          +str(field[11]['place'])+" |")
-    print("| "+str(field[0]['place'])+" "+str(field[15]['place'])+" "+str(field[14]['place'])+" "+str(field[13]['place'])+" "+str(field[12]['place'])+" |")
-    print("+ - - - - - +")
+    show_field = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+    for i in range(17):
+        for _ in range(17):
+            show_field[i].append([])
+    for i in range(17):
+        for j in range(17):
+            if((i == 0 or i == 16) and j % 2 == 0):
+                show_field[i][j] = '-----'
+            else:
+                show_field[i][j] = '     '
+    for i in range(1, 16):
+        for j in range(5,12,2):
+            show_field[i][j] = "  |  "
+    for i in range(17):
+        for j in range(5,12,2):
+            show_field[j][i] = "-----"
+    for i in range(5, 12):
+        for j in range(5, 12):
+            show_field[i][j] = "     "
+    for i in range(17):
+        for j in range(17):
+            if(0 < i < 16):
+                show_field[i][0], show_field[i][16] = "|","|"
+            else:
+                show_field[i][0], show_field[i][16] = "+","+"
+    for i in range(12, 3, -2):
+        if(i == 12):#start
+            show_field[i][4] = "start"
+        else:#a, b, c, d
+            name = "  "+chr(int(102-(i/2)))+"  "
+            show_field[i][4] = name
+    for i in range(6, 13, 2):#e, f, g, h
+        show_field[4][i] = "  "+chr(int(98+(i/2)))+"  "
+    for i in range(6, 13, 2):#i, j ,k, l
+        show_field[i][12] = "  "+chr(int(102+(i/2)))+"  "
+    for i in range(10, 5, -2):#m, n, o
+        show_field[12][i] = "  "+chr(int(114-(i/2)))+"  "
+    for i in range(17):
+        for j in range(17):
+            print(show_field[i][j], end = "")
+        print("\n")
     return field
 
 def make_player(player):#플레이어 만들기
@@ -98,18 +132,18 @@ def info_player(player):#플레이어 정보 출력
         player['money'] += 30
         player['total'] += 30
     if(player['before_where'] == 0):
-        player['before_where'] == 's'
+        player['before_where'] == 'start'
     if(player['where'] != player['before_where']):
         if(player['where'] == 0):
-            print("현재 위치 :",chr(player['before_where']+96),">>> s")
+            print("현재 위치 :",chr(player['before_where']+96),">>> start")
         else:
             if(player['before_where'] == 0):
-                print("현재 위치 : s",">>>",chr(player['where']+96))
+                print("현재 위치 : start",">>>",chr(player['where']+96))
             else:
                 print("현재 위치 :",chr(player['before_where']+96),">>>",chr(player['where']+96))
     else:
         if(player['where'] == 0):
-            print("현재 위치 :"," s")
+            print("현재 위치 : start")
         else:
             print("현재 위치 :",chr(player['where']+96))
     player['before_where'] = player['where']
@@ -140,7 +174,7 @@ def game():
     while(game_round < 30):
         turn = 1
         while(turn < count+1):
-            print("-----------------\n현재 라운드 : "+str(game_round))
+            print("\n-----------------------------------------------------------------------------\n현재 라운드 : "+str(game_round))
             game_field = field()
             print("현재 차례 : player"+str(turn))
             time.sleep(1.5)
