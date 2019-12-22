@@ -27,9 +27,9 @@ def count_computer():
 def change_turn():#차례 넘기기
     while True:
         try:
-            x = input("차례를 넘기시려면 y를 입력해주세요.")
+            x = input("차례를 넘기시려면 y를 입력해주세요. ")
             while x != 'y':
-                x = input("차례를 넘기시려면 y를 입력해주세요.")
+                x = input("차례를 넘기시려면 y를 입력해주세요. ")
             break
         except ValueError:
             continue
@@ -55,9 +55,9 @@ def press_start():#누르면 시작
 def buy_land():#땅 사기
     while True:
         try:
-            x = input("땅을 사시겠습니까? (y or n)\n")
+            x = input("땅을 사시겠습니까? (y or n) ")
             while x not in {'y','n'}:
-                x = input("땅을 사시겠습니까? (y or n)\n")
+                x = input("땅을 사시겠습니까? (y or n) ")
             break
         except ValueError:
             continue
@@ -81,9 +81,9 @@ def field():#게임 판 보여주기
         field.append({'place':place[i],'price':price[i]})
     print("+ - - - - - +")
     print("| "+str(field[4]['place'])+" "+str(field[5]['place'])+" "+str(field[6]['place'])+" "+str(field[7]['place'])+" "+str(field[8]['place'])+" |")
-    print("| "+str(field[3]['place'])+"       "+str(field[9]['place'])+" |")
-    print("| "+str(field[2]['place'])+"       "+str(field[10]['place'])+" |")
-    print("| "+str(field[1]['place'])+"       "+str(field[11]['place'])+" |")
+    print("| "+str(field[3]['place'])+"       "                                                                           +str(field[9]['place'])+" |")
+    print("| "+str(field[2]['place'])+"       "                                                                          +str(field[10]['place'])+" |")
+    print("| "+str(field[1]['place'])+"       "                                                                          +str(field[11]['place'])+" |")
     print("| "+str(field[0]['place'])+" "+str(field[15]['place'])+" "+str(field[14]['place'])+" "+str(field[13]['place'])+" "+str(field[12]['place'])+" |")
     print("+ - - - - - +")
     return field
@@ -140,28 +140,28 @@ def game():
     while(game_round < 30):
         turn = 1
         while(turn < count+1):
-            print("\n현재 라운드 : "+str(game_round))
+            print("-----------------\n현재 라운드 : "+str(game_round))
             game_field = field()
             print("현재 차례 : player"+str(turn))
             time.sleep(1.5)
             go = dice()
             print("\n")
             player_list[turn-1]['where'] += go
-            for i in  range(1,count+1):
+            for i in range(1,count+1):
                 print("player"+str(i))
                 info_player(player_list[i-1])
-                print("땅:",str(buyland_list[i-1]),"\n")
+                print("땅:",buyland_list[i-1],"\n")
             a = player_list[turn-1]['where']
             if game_field[a]['place'] not in allland_list:
                 if(player_list[turn-1]['where'] != 0):
-                    want_buy = buy_land()
-                    if(want_buy == True):
-                        if(player_list[turn-1]['money'] >= game_field[a]['price']):
+                    if(player_list[turn-1]['money'] < game_field[a]['price']):
+                        print("돈이 부족해서 땅을 살 수 없습니다.")
+                    else:
+                        if(buy_land()):
                             buyland_list[turn-1].append(game_field[a]['place'])
                             player_list[turn-1]['money'] -= game_field[a]['price']
                             allland_list.append(game_field[a]['place'])
-                        else:
-                            print("충분한 돈이 없습니다.")
+                else: print("출발점에 도착했습니다.")
             else:#누군가가 가지고 있다면
                 for i in range(count):
                     if(game_field[a]['place'] in buyland_list[i]):
@@ -174,7 +174,7 @@ def game():
                     player_list[turn-1]['money'] -= game_field[a]['price'] * 2
                     player_list[turn-1]['total'] -= game_field[a]['price'] * 2
                     player_list[owner]['money'] += game_field[a]['price'] * 2
-                    player_list[owner]['totla'] += game_field[a]['price'] * 2
+                    player_list[owner]['total'] += game_field[a]['price'] * 2
             next_turn = change_turn()
             while(next_turn != True):
                 next_turn = change_turn()
