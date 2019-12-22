@@ -11,19 +11,6 @@ def count_player():#플레이 할 사람수 입력
             continue
     return x
 
-def count_computer():
-    if (count_player()) == 4:
-        print("너무 많은 사람들이 참여하기 때문에 AI는 없습니다.")
-    while (count_player() < 4):
-        try:
-            x = int(input("얼마나 많은 ai를 원합니까?"))
-            while (x + count_player()) > 4:
-                x = int(input("너무 많아요.",str(4-x)+"보다 적게 해 주세요."))
-            break
-        except ValueError:
-            continue
-    return x
-
 def change_turn():#차례 넘기기
     while True:
         try:
@@ -79,47 +66,6 @@ def field():#게임 판 보여주기
     field = []
     for i in range(0,16):
         field.append({'place':place[i],'price':price[i]})
-    show_field = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
-    for i in range(17):
-        for _ in range(17):
-            show_field[i].append([])
-    for i in range(17):
-        for j in range(17):
-            if((i == 0 or i == 16) and j % 2 == 0):
-                show_field[i][j] = '-----'
-            else:
-                show_field[i][j] = '     '
-    for i in range(1, 16):
-        for j in range(5,12,2):
-            show_field[i][j] = "  |  "
-    for i in range(17):
-        for j in range(5,12,2):
-            show_field[j][i] = "-----"
-    for i in range(5, 12):
-        for j in range(5, 12):
-            show_field[i][j] = "     "
-    for i in range(17):
-        for j in range(17):
-            if(0 < i < 16):
-                show_field[i][0], show_field[i][16] = "|","|"
-            else:
-                show_field[i][0], show_field[i][16] = "+","+"
-    for i in range(12, 3, -2):
-        if(i == 12):#start
-            show_field[i][4] = "start"
-        else:#a, b, c, d
-            name = "  "+chr(int(102-(i/2)))+"  "
-            show_field[i][4] = name
-    for i in range(6, 13, 2):#e, f, g, h
-        show_field[4][i] = "  "+chr(int(98+(i/2)))+"  "
-    for i in range(6, 13, 2):#i, j ,k, l
-        show_field[i][12] = "  "+chr(int(102+(i/2)))+"  "
-    for i in range(10, 5, -2):#m, n, o
-        show_field[12][i] = "  "+chr(int(114-(i/2)))+"  "
-    for i in range(17):
-        for j in range(17):
-            print(show_field[i][j], end = "")
-        print("\n")
     return field
 
 def make_player(player):#플레이어 만들기
@@ -150,10 +96,24 @@ def info_player(player):#플레이어 정보 출력
     print("보유 돈 : "+str(player['money']))
     print("총 액 : "+str(player['total']))
 
-def the_end(player, cnt_p):
-    if(player['money'] < 0):
-        player['alive'] = 0
-        cnt_p -= 1
+def loc(n):
+    if(n == 0):loc = [14,2]
+    if(n == 1):loc = [10,2]
+    if(n == 2):loc = [8,2]
+    if(n == 3):loc = [6,2]
+    if(n == 4):loc = [2,2]
+    if(n == 5):loc = [14,6]
+    if(n == 6):loc = [14,8]
+    if(n == 7):loc = [14,10]
+    if(n == 8):loc = [14,14]
+    if(n == 9):loc = [6,14]
+    if(n == 10):loc = [8,14]
+    if(n == 11):loc = [10,14]
+    if(n == 12):loc = [14,14]
+    if(n == 13):loc = [14,10]
+    if(n == 14):loc = [14,8]
+    if(n == 15):loc = [14,6]
+    return loc
 
 def game():
     player_list = []
@@ -176,6 +136,44 @@ def game():
         while(turn < count+1):
             print("\n-----------------------------------------------------------------------------\n현재 라운드 : "+str(game_round))
             game_field = field()
+            show_field = [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
+            for i in range(17):
+                for _ in range(17):
+                    show_field[i].append([])
+            for i in range(17):
+                for j in range(17):
+                    if((i == 0 or i == 16) and j % 2 == 0):
+                        show_field[i][j] = '-----'
+                    else:
+                        show_field[i][j] = '     '
+            for i in range(1, 16):
+                for j in range(5,12,2):
+                    show_field[i][j] = "  |  "
+            for i in range(17):
+                for j in range(5,12,2):
+                    show_field[j][i] = " --- "
+            for i in range(5, 12):
+                for j in range(5, 12):
+                    show_field[i][j] = "     "
+            for i in range(17):
+                for j in range(17):
+                    if(0 < i < 16):
+                        show_field[i][0], show_field[i][16] = "|","|"
+                    else:
+                        show_field[i][0], show_field[i][16] = "+","+"
+            show_field[12][4] = "start"
+            for i in range(10, 3, -2):#a, b, c, d
+                show_field[i][4] = "  "+chr(int(102-(i/2)))+"  "
+            for i in range(6, 13, 2):#e, f, g, h
+                show_field[4][i] = "  "+chr(int(98+(i/2)))+"  "
+            for i in range(6, 13, 2):#i, j ,k, l
+                show_field[i][12] = "  "+chr(int(102+(i/2)))+"  "
+            for i in range(10, 5, -2):#m, n, o
+                show_field[12][i] = "  "+chr(int(114-(i/2)))+"  "
+            for i in range(17):
+                for j in range(17):
+                    print(show_field[i][j], end = "")
+                print("\n")
             print("현재 차례 : player"+str(turn))
             time.sleep(1.5)
             go = dice()
