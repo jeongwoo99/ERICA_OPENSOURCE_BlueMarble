@@ -55,9 +55,9 @@ def press_start():#누르면 시작
 def buy_land():#땅 사기
     while True:
         try:
-            x = input("땅을 사시겠습니까? y or n")
+            x = input("땅을 사시겠습니까? (y or n)\n")
             while x not in {'y','n'}:
-                x = input("땅을 사시겠습니까? y or n")
+                x = input("땅을 사시겠습니까? (y or n)\n")
             break
         except ValueError:
             continue
@@ -111,7 +111,6 @@ def info_player(player):#플레이어 정보 출력
             print("현재 위치 :"," s")
         else:
             print("현재 위치 :",chr(player['where']+96))
-
     player['before_where'] = player['where']
     print("보유 돈 : "+str(player['money']))
 
@@ -126,6 +125,7 @@ def game():
     allland_list = []
     countp = count_player()
     cnt_p = countp
+    count = countp
     for x in range(1, countp + 1):
         playerx = set()
         player_list.append(make_player(playerx))
@@ -137,14 +137,14 @@ def game():
     game_round = 1
     while(game_round < 30):
         turn = 1
-        while(turn < countp+1):
+        while(turn < count+1):
             print("현재 라운드 : "+str(game_round))
-            field()
+            game_field = field()
             print("현재 차례 : player"+str(turn))
-            go = dice()
             time.sleep(1.5)
+            go = dice()
             player_list[turn-1]['where'] += go
-            for i in  range(1,countp+1):
+            for i in  range(1,count+1):
                 print("player"+str(i))
                 info_player(player_list[i-1])
                 print("땅:",str(buyland_list[i-1]))
@@ -156,20 +156,20 @@ def game():
                         if(player_list[turn-1]['money'] >= game_field[a]['price']):
                             buyland_list[turn-1].append(game_field[a]['place'])
                             player_list[turn-1]['money'] -= game_field[a]['price']
-                            alland_list.append(game_field[a]['place'])
+                            allland_list.append(game_field[a]['place'])
                         else:
                             print("충분한 돈이 없습니다.")
-            else:
-                for i in range(countp):
+            else:#누군가가 가지고 있다면
+                for i in range(count):
                     if(game_field[a]['place'] in buyland_list[i]):
                         owner = i
                 if(turn-1 == owner):
-                    print("당신이 이미 소유한 땅입니다.")
+                    print("이미 소유한 땅입니다.")
                 else:
                     print("player"+str(owner+1)+" 땅입니다.")
                     print("player"+str(owner+1)+"에게 "+str(game_field[a]['price']*2)+"원을 지불합니다.")
                     player_list[turn-1]['money'] -= game_field[a]['price'] * 2
-                    player_list[owner]p'money'] += game_field[a]['price'] * 2
+                    player_list[owner]['money'] += game_field[a]['price'] * 2
             next_turn = change_turn()
             while(next_turn != True):
                 next_turn = change_turn()
@@ -177,7 +177,7 @@ def game():
         game_round += 1
     print("게임이 종료되었습니다.")
     winner = 0
-    for x in range(countp-1):
+    for x in range(count-1):
         if(player_list[x]['money'] >= player_list[winner]['money']):
             winner = x+1
     if(winner %2 == 1):
