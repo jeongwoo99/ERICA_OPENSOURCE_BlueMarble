@@ -89,13 +89,14 @@ def field():#게임 판 보여주기
     return field
 
 def make_player(player):#플레이어 만들기
-    player = {'before_where':0,'where':0,'money':50, 'alive':1}
+    player = {'before_where':0,'where':0,'money':50, 'alive':1, 'total':50}
     return player
 
 def info_player(player):#플레이어 정보 출력
     if(player['where'] >= 16):
         player['where'] -= 16
         player['money'] += 30
+        player['total'] += 30
     if(player['before_where'] == 0):
         player['before_where'] == 's'
     if(player['where'] != player['before_where']):
@@ -113,11 +114,12 @@ def info_player(player):#플레이어 정보 출력
             print("현재 위치 :",chr(player['where']+96))
     player['before_where'] = player['where']
     print("보유 돈 : "+str(player['money']))
+    print("총 액 : "+str(player['total']))
 
 def the_end(player, cnt_p):
     if(player['money'] < 0):
-        player['alive'] = 0;
-        cnt_p -= 1;
+        player['alive'] = 0
+        cnt_p -= 1
 
 def game():
     player_list = []
@@ -138,16 +140,17 @@ def game():
     while(game_round < 30):
         turn = 1
         while(turn < count+1):
-            print("현재 라운드 : "+str(game_round))
+            print("\n현재 라운드 : "+str(game_round))
             game_field = field()
             print("현재 차례 : player"+str(turn))
             time.sleep(1.5)
             go = dice()
+            print("\n")
             player_list[turn-1]['where'] += go
             for i in  range(1,count+1):
                 print("player"+str(i))
                 info_player(player_list[i-1])
-                print("땅:",str(buyland_list[i-1]))
+                print("땅:",str(buyland_list[i-1]),"\n")
             a = player_list[turn-1]['where']
             if game_field[a]['place'] not in allland_list:
                 if(player_list[turn-1]['where'] != 0):
@@ -169,7 +172,9 @@ def game():
                     print("player"+str(owner+1)+" 땅입니다.")
                     print("player"+str(owner+1)+"에게 "+str(game_field[a]['price']*2)+"원을 지불합니다.")
                     player_list[turn-1]['money'] -= game_field[a]['price'] * 2
+                    player_list[turn-1]['total'] -= game_field[a]['price'] * 2
                     player_list[owner]['money'] += game_field[a]['price'] * 2
+                    player_list[owner]['totla'] += game_field[a]['price'] * 2
             next_turn = change_turn()
             while(next_turn != True):
                 next_turn = change_turn()
@@ -178,7 +183,7 @@ def game():
     print("게임이 종료되었습니다.")
     winner = 0
     for x in range(count-1):
-        if(player_list[x]['money'] >= player_list[winner]['money']):
+        if(player_list[x]['total'] >= player_list[winner]['total']):
             winner = x+1
     if(winner %2 == 1):
         print("player"+str(winner+1)+"이 이 게임에서 이겼어요!")
